@@ -1,0 +1,21 @@
+Those scripts are made to add the AeroSnap shortcuts from Windows 7 to Linux. (Dock and maximize the active window)
+
+dock_left.sh: Docks the current window to the left of the screen and resize it to half the screen. If it is already docked to the left in a dual-screen configuration it will dock it to the right of the previous screen).
+dock_right.sh: Same thing but on the right.
+maximize.sh: Maximizes the active window.
+minimize.sh: Un-maximize the active window.
+
+### HOW TO USE IT ####
+- You will need to install the following packages: wininfo, xprop, wmctrl
+- Configure a hotkey for each of these scripts, to imitate windows seven you should do
+    * Win+UP: maximize.sh
+    * Win+LEFT: dock_left.sh
+    * Win+RIGHT: dock_right.sh
+    * Win+DOWN: minimize.sh
+
+### BUGS AND LIMITATIONS ###
+- It only supports configurations with 2 screens of the same width, smaller than 1920pixels
+- It actually resizes the window twice (slower)
+
+### NEXT VERSION ###
+- I have a new version which is working with any configuration, using xrandr, but it's much slower due to the fact that xrandr is slow...
