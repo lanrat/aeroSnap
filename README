@@ -6,7 +6,8 @@ maximize.sh: Maximizes the active window.
 minimize.sh: Un-maximize the active window.
 
 ### HOW TO USE IT ####
-- You will need to install the following packages: wininfo, xprop, wmctrl
+- Run the updateConfig script to autodetect screen configuration
+- You will need to have the following packages installed: xrandr, wininfo, xprop, wmctrl
 - Configure a hotkey for each of these scripts, to imitate windows seven you should do
     * Win+UP: maximize.sh
     * Win+LEFT: dock_left.sh
@@ -14,8 +15,3 @@ minimize.sh: Un-maximize the active window.
     * Win+DOWN: minimize.sh
 
 ### BUGS AND LIMITATIONS ###
-- It only supports configurations with 2 screens of the same width, smaller than 1920pixels
-- It actually resizes the window twice (slower)
-
-### NEXT VERSION ###
-- I have a new version which is working with any configuration, using xrandr, but it's much slower due to the fact that xrandr is slow...
