@@ -9,7 +9,8 @@
 # Date: 01/2011
 
 ################################# PARAMS ##############################
-configFile=/home/nbarraille/Scripts/aeroSnap/screen_conf
+#configFile=/home/nbarraille/Scripts/aeroSnap/screen_conf
+configFile=screen_conf
 maxWinDecWidth=10
 ################################## RUN ################################
 
@@ -33,8 +34,8 @@ windowMiddle=$(($windowLeft + $(($windowWidth / 2))))
 # gets current screen
 currentScreen=-1
 i=1
-while [ $currentScreen -eq -1 ]; do
-    if [ $numberScreens -eq $i ] || [ $windowMiddle -lt ${screensLeft[$i]} ]; then
+while [[ $currentScreen -eq -1 ]]; do
+    if [[ $numberScreens -eq $i ]] || [[ $windowMiddle -lt ${screensLeft[$i]} ]]; then
         currentScreen=$(($i - 1))
     fi
     let i++
@@ -43,30 +44,32 @@ done
 halfScreen=$((${screensWidth[$currentScreen]} / 2))
 
 # reajusts window detection to be tolerant with the window decoration width
-minBoundary=$((${screensLeft[$currentScreen]} - $maxWinDecWidth))
-maxBoundary=$((${screensLeft[$currentScreen]} + $maxWinDecWidth))
-if [ $windowLeft -gt $minBoundary ] && [ $windowLeft -lt $maxBoundary ]; then
-    windowLeft=${screensWidth[$currentScreen]}
-fi
+#minBoundary=$((${screensLeft[$currentScreen]} - $maxWinDecWidth))
+#maxBoundary=$((${screensLeft[$currentScreen]} + $maxWinDecWidth))
+#if [[ $windowLeft -gt $minBoundary ]] && [[ $windowLeft -lt $maxBoundary ]]; then
+#    echo "DERP"
+#    windowLeft=${screensWidth[$currentScreen]}
+#fi
 
 # detects if the window is already docked left
 dockedLeft=-1
 i=0
-while [ $i -lt $numberScreens ] && [ $dockedLeft -eq -1 ]; do
-    if [ $windowLeft -eq ${screensLeft[$i]} ] && [ $windowWidth -eq $halfScreen ]; then
+while [[ $i -lt $numberScreens ]] && [[ $dockedLeft -eq -1 ]]; do
+  if [[ $windowLeft -eq $((${screensLeft[$i]} + 1)) ]] && [[ $windowWidth -eq $halfScreen ]]; then
         halfScreen=$((${screensWidth[$(($currentScreen - 1))]} / 2))
         dockedLeft=$i
     fi
     let i++
 done
 
+
 # performs the move
-if [ $dockedLeft -eq -1 ]; then
+if [[ $dockedLeft -eq -1 ]]; then
     # Dock the window on the left of the current screen
     wmctrl -r :ACTIVE: -b remove,maximized_horz
     wmctrl -r :ACTIVE: -e 0,${screensLeft[$currentScreen]},0,$halfScreen,-1
     wmctrl -r :ACTIVE: -b add,maximized_vert
-else
+elif [[ $dockedLeft -ne 0 ]]; then
     # Dock the window on the right of the previous screen
     wmctrl -r :ACTIVE: -b remove,maximized_horz
     wmctrl -r :ACTIVE: -e 0,$((${screensLeft[$currentScreen]} - $halfScreen)),0,$halfScreen,-1

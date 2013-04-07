@@ -9,7 +9,7 @@
 # Date: 01/2011
 
 ################################# PARAMS ##############################
-configFile=/home/nbarraille/Scripts/aeroSnap/screen_conf
+configFile=screen_conf
 maxWinDecWidth=10
 ################################## RUN ################################
 # reads config file to get screens info
@@ -33,8 +33,8 @@ windowRight=$(($windowLeft + $windowWidth))
 # gets current screen
 currentScreen=-1
 i=1
-while [ $currentScreen -eq -1 ]; do
-    if [ $numberScreens -eq $i ] || [ $windowMiddle -lt ${screensLeft[$i]} ]; then
+while [[ $currentScreen -eq -1 ]]; do
+    if [[ $numberScreens -eq $i ]] || [[ $windowMiddle -lt ${screensLeft[$i]} ]]; then
         currentScreen=$(($i - 1))
     fi
     let i++
@@ -43,30 +43,32 @@ done
 halfScreen=$((${screensWidth[$currentScreen]} / 2))
 
 # reajusts window detection to be tolerant with the window decoration width
-minBoundary=$(($((${screensLeft[$currentScreen]} + ${screensWidth[$currentScreen]})) - $maxWinDecWidth))
-maxBoundary=$(($((${screensLeft[$currentScreen]} + ${screensWidth[$currentScreen]})) + $maxWinDecWidth))
-if [ $windowRight -gt $minBoundary ] && [ $windowRight -lt $maxBoundary ]; then
-    windowRight=${screensWidth[$currentScreen]}
-fi
+#minBoundary=$(($((${screensLeft[$currentScreen]} + ${screensWidth[$currentScreen]})) - $maxWinDecWidth))
+#maxBoundary=$(($((${screensLeft[$currentScreen]} + ${screensWidth[$currentScreen]})) + $maxWinDecWidth))
+#if [[ $windowRight -gt $minBoundary ]] && [[ $windowRight -lt $maxBoundary ]]; then
+#    windowRight=${screensWidth[$currentScreen]}
+#fi
 
 # detects if the window is already docked right
 dockedRight=-1
 i=0
-while [ $i -lt $numberScreens ] && [ $dockedRight -eq -1 ]; do
-    if [ $windowRight -eq $((${screensLeft[$i]} + ${screensWidth[$i]})) ] && [ $windowWidth -eq $halfScreen ]; then
-        halfScreen=$((${screensWidth[$(($currentScreen + 1))]} / 2))
-        dockedRight=$i
+while [[ $i -lt $numberScreens ]] && [[ $dockedRight -eq -1 ]]; do
+    if [[ $windowRight -eq $((${screensLeft[$i]} + ${screensWidth[$i]} + 1)) ]] && [[ $windowWidth -eq $halfScreen ]]; then
+        if [[ ${i} -ne $(($numberScreens-1)) ]]; then
+            halfScreen=$((${screensWidth[$(($currentScreen + 1))]} / 2))
+            dockedRight=$i
+        fi
     fi
     let i++
 done
 
 # performs the move
-if [ $dockedRight -eq -1 ]; then
+if [[ $dockedRight -eq -1 ]]; then
     # Dock the window on the right of the current screen
     wmctrl -r :ACTIVE: -b remove,maximized_horz
     wmctrl -r :ACTIVE: -e 0,$((${screensLeft[$currentScreen]} + $halfScreen)),0,$halfScreen,-1
     wmctrl -r :ACTIVE: -b add,maximized_vert
-else
+  elif [[ $dockedRight -ne $((numberScreens-1)) ]]; then
     # Dock the window on the left of the next screen
     wmctrl -r :ACTIVE: -b remove,maximized_horz
     wmctrl -r :ACTIVE: -e 0,$((${screensLeft[$currentScreen]} + ${screensWidth[$currentScreen]})),0,$halfScreen,-1
