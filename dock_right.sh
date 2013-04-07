@@ -9,7 +9,8 @@
 # Date: 01/2011
 
 ################################# PARAMS ##############################
-configFile=screen_conf
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+configFile=${DIR}/screen_conf
 maxWinDecWidth=10
 ################################## RUN ################################
 # reads config file to get screens info

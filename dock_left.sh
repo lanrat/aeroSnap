@@ -9,8 +9,8 @@
 # Date: 01/2011
 
 ################################# PARAMS ##############################
-#configFile=/home/nbarraille/Scripts/aeroSnap/screen_conf
-configFile=screen_conf
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+configFile=${DIR}/screen_conf
 maxWinDecWidth=10
 ################################## RUN ################################
 
